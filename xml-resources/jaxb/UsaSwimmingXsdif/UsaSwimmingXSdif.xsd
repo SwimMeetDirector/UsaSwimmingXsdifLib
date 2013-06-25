@@ -1,0 +1,1445 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Scott Crowder (Statera) -->
+<xs:schema targetNamespace="http://www.usa-swimming.org/XSDIF" xmlns:htm="http://www.w3.org/1999/xhtml" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.usa-swimming.org/XSDIF" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.52" id="UsaSwimmingXSDIF">
+	<xs:annotation>
+		<xs:documentation>XSDIF specification for USA Swimming
+		Date: 12/05/2002
+		United States Swimming has matured as an organization and expanded services to individuals and clubs.  To support this expansion, USS has developed a computer plan. One component is a standard interchange format for technical data.  Swimming data must be transmitted among the clubs, Local Swimming Committees (LSCs), and the USS headquarters office.  Exchanging meet results is one example, where data from a host club is distributed to swimmers and clubs using diskettes or modems.  Some LSCs are compiling swimmer statistics and would retype the data from printed sheets if electronic transmission were not available.  A standard format promotes easy exchange of data and the development of new computer programs and services.  The goal is to preserve the valuable efforts of our volunteers.<htm:br />This standard is a evolution of the original SDIF formats, but has been moved into XML.</xs:documentation>
+	</xs:annotation>
+	<!-- include some useful types available from www.wrox.com's ProSchemas book -->
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+NAME: ProSchemas.PostalAddress.xsd [2001-06-26]
+BY:   Nikola Ozu
+NOTE: This schema is in the PUBLIC DOMAIN.
+    </xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="base_PostalAddress">
+		<xs:sequence>
+			<xs:element name="Street" type="xs:string" maxOccurs="4" />
+			<xs:element name="City" type="xs:string" />
+		</xs:sequence>
+		<xs:attribute name="country" type="iso3166_CountryCode" use="required" />
+	</xs:complexType>
+	<xs:simpleType name="can_ProvinceCode">
+		<xs:annotation>
+			<xs:documentation source="http://www.upu.org" xml:lang="en">
+SOURCE:
+ Universal Postal Union (UPU)
+ "Postal addressing systems - Canada" [2000-11-07]
+      </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AB" />
+			<xs:enumeration value="BC" />
+			<xs:enumeration value="MB" />
+			<xs:enumeration value="NB" />
+			<xs:enumeration value="NF" />
+			<xs:enumeration value="NT" />
+			<xs:enumeration value="NS" />
+			<xs:enumeration value="NU" />
+			<xs:enumeration value="ON" />
+			<xs:enumeration value="PE" />
+			<xs:enumeration value="QC" />
+			<xs:enumeration value="SK" />
+			<xs:enumeration value="YT" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="can_PostalCode">
+		<xs:annotation>
+			<xs:documentation source="http://www.upu.org" xml:lang="en">
+SOURCE:
+ Universal Postal Union (UPU)
+ "Postal addressing systems - Canada" [2000-11-07]
+      </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="7" />
+			<xs:pattern value="[A-Z][0-9][A-Z] [0-9][A-Z][0-9]" />
+		</xs:restriction>
+		<!-- "xnx nxn" -->
+	</xs:simpleType>
+	<xs:complexType name="can_PostalAddress">
+		<xs:complexContent>
+			<xs:extension base="base_PostalAddress">
+				<xs:sequence>
+					<xs:element name="Province" type="can_ProvinceCode" />
+					<xs:element name="PostalCode" type="can_PostalCode" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="mex_PostalCode">
+		<xs:annotation>
+			<xs:documentation source="http://www.upu.org" xml:lang="en">
+SOURCE:
+ Universal Postal Union (UPU)
+ "Postal addressing systems - Mexico" [2000-11-07]
+      </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:positiveInteger">
+			<xs:pattern value="[0-9]{5}" />
+		</xs:restriction>
+		<!-- "nnnnn" -->
+	</xs:simpleType>
+	<xs:simpleType name="mex_StateCode">
+		<xs:annotation>
+			<xs:documentation source="http://www.upu.org" xml:lang="en">
+SOURCE:
+ Universal Postal Union (UPU)
+ "Postal addressing systems - Mexico" [2000-11-07]
+      </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AGS" />
+			<xs:enumeration value="BC" />
+			<xs:enumeration value="BCS" />
+			<xs:enumeration value="CAM" />
+			<xs:enumeration value="CHIS" />
+			<xs:enumeration value="CHIH" />
+			<xs:enumeration value="COAH" />
+			<xs:enumeration value="COL" />
+			<xs:enumeration value="DF" />
+			<xs:enumeration value="DGO" />
+			<xs:enumeration value="GTO" />
+			<xs:enumeration value="GRO" />
+			<xs:enumeration value="HGO" />
+			<xs:enumeration value="JAL" />
+			<xs:enumeration value="MEX" />
+			<xs:enumeration value="MICH" />
+			<xs:enumeration value="MOR" />
+			<xs:enumeration value="NAY" />
+			<xs:enumeration value="NL" />
+			<xs:enumeration value="OAX" />
+			<xs:enumeration value="PUE" />
+			<xs:enumeration value="QRO" />
+			<xs:enumeration value="QROO" />
+			<xs:enumeration value="SLP" />
+			<xs:enumeration value="SIN" />
+			<xs:enumeration value="SON" />
+			<xs:enumeration value="TAB" />
+			<xs:enumeration value="TAMPS" />
+			<xs:enumeration value="TLAX" />
+			<xs:enumeration value="VER" />
+			<xs:enumeration value="YUC" />
+			<xs:enumeration value="ZAC" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="mex_PostalAddress">
+		<xs:complexContent>
+			<xs:extension base="base_PostalAddress">
+				<xs:sequence>
+					<xs:element name="State" type="mex_StateCode" />
+					<xs:element name="PostalCode" type="mex_PostalCode" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="usa_ZIP">
+		<xs:annotation>
+			<xs:documentation source="http://www.upu.org" xml:lang="en">
+SOURCE:
+ Universal Postal Union (UPU)
+ "Postal addressing systems - United States of America" [2001-01-24]
+      </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{5}(-[0-9]{4})?" />
+		</xs:restriction>
+		<!-- "nnnnn" or "nnnnn-nnnn" -->
+	</xs:simpleType>
+	<xs:simpleType name="usa_StateCode">
+		<xs:annotation>
+			<xs:documentation source="http://www.upu.org" xml:lang="en">
+SOURCE:
+ Universal Postal Union (UPU)
+ "Postal addressing systems - United States of America" [2001-01-24]
+      </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AL" />
+			<xs:enumeration value="AK" />
+			<xs:enumeration value="AS" />
+			<xs:enumeration value="AA" />
+			<xs:enumeration value="AE" />
+			<xs:enumeration value="AP" />
+			<xs:enumeration value="AZ" />
+			<xs:enumeration value="AR" />
+			<xs:enumeration value="CA" />
+			<xs:enumeration value="CO" />
+			<xs:enumeration value="CT" />
+			<xs:enumeration value="DE" />
+			<xs:enumeration value="DC" />
+			<xs:enumeration value="FM" />
+			<xs:enumeration value="FL" />
+			<xs:enumeration value="GA" />
+			<xs:enumeration value="GU" />
+			<xs:enumeration value="HI" />
+			<xs:enumeration value="ID" />
+			<xs:enumeration value="IL" />
+			<xs:enumeration value="IN" />
+			<xs:enumeration value="IA" />
+			<xs:enumeration value="KS" />
+			<xs:enumeration value="KY" />
+			<xs:enumeration value="LA" />
+			<xs:enumeration value="ME" />
+			<xs:enumeration value="MH" />
+			<xs:enumeration value="MD" />
+			<xs:enumeration value="MA" />
+			<xs:enumeration value="MI" />
+			<xs:enumeration value="MN" />
+			<xs:enumeration value="MS" />
+			<xs:enumeration value="MO" />
+			<xs:enumeration value="MT" />
+			<xs:enumeration value="NE" />
+			<xs:enumeration value="NV" />
+			<xs:enumeration value="NH" />
+			<xs:enumeration value="NJ" />
+			<xs:enumeration value="NM" />
+			<xs:enumeration value="NY" />
+			<xs:enumeration value="NC" />
+			<xs:enumeration value="ND" />
+			<xs:enumeration value="MP" />
+			<xs:enumeration value="OH" />
+			<xs:enumeration value="OK" />
+			<xs:enumeration value="OR" />
+			<xs:enumeration value="PW" />
+			<xs:enumeration value="PA" />
+			<xs:enumeration value="PR" />
+			<xs:enumeration value="RI" />
+			<xs:enumeration value="SC" />
+			<xs:enumeration value="SD" />
+			<xs:enumeration value="TN" />
+			<xs:enumeration value="TX" />
+			<xs:enumeration value="UT" />
+			<xs:enumeration value="VT" />
+			<xs:enumeration value="VI" />
+			<xs:enumeration value="WA" />
+			<xs:enumeration value="WV" />
+			<xs:enumeration value="WI" />
+			<xs:enumeration value="WY" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="usa_PostalAddress">
+		<xs:complexContent>
+			<xs:extension base="base_PostalAddress">
+				<xs:sequence>
+					<xs:element name="State" type="usa_StateCode" />
+					<xs:element name="Zip" type="usa_ZIP" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="iso3166_CountryCode">
+		<xs:annotation>
+			<xs:documentation source="http://www.un.org/Depts/unsd/methods/m49alpha.htm" xml:lang="en">
+SOURCE:
+ United Nations Statistics Division (UNSD)
+ "Countries or areas, codes and abbreviations" [2000-11-03 revision]
+ NOTE: No codes are currently assigned for the Channel Islands or the Isle of Man.
+      </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AFG" />
+			<xs:enumeration value="ALB" />
+			<xs:enumeration value="DZA" />
+			<xs:enumeration value="ASM" />
+			<xs:enumeration value="AND" />
+			<xs:enumeration value="AGO" />
+			<xs:enumeration value="AIA" />
+			<xs:enumeration value="ATG" />
+			<xs:enumeration value="ARG" />
+			<xs:enumeration value="ARM" />
+			<xs:enumeration value="ABW" />
+			<xs:enumeration value="AUS" />
+			<xs:enumeration value="AUT" />
+			<xs:enumeration value="AZE" />
+			<xs:enumeration value="BHS" />
+			<xs:enumeration value="BHR" />
+			<xs:enumeration value="BGD" />
+			<xs:enumeration value="BRB" />
+			<xs:enumeration value="BLR" />
+			<xs:enumeration value="BEL" />
+			<xs:enumeration value="BLZ" />
+			<xs:enumeration value="BEN" />
+			<xs:enumeration value="BMU" />
+			<xs:enumeration value="BTN" />
+			<xs:enumeration value="BOL" />
+			<xs:enumeration value="BIH" />
+			<xs:enumeration value="BWA" />
+			<xs:enumeration value="BRA" />
+			<xs:enumeration value="VGB" />
+			<xs:enumeration value="BRN" />
+			<xs:enumeration value="BGR" />
+			<xs:enumeration value="BFA" />
+			<xs:enumeration value="BDI" />
+			<xs:enumeration value="KHM" />
+			<xs:enumeration value="CMR" />
+			<xs:enumeration value="CAN" />
+			<xs:enumeration value="CPV" />
+			<xs:enumeration value="CYM" />
+			<xs:enumeration value="CAF" />
+			<xs:enumeration value="TCD" />
+			<xs:enumeration value="CHL" />
+			<xs:enumeration value="CHN" />
+			<xs:enumeration value="TWN" />
+			<xs:enumeration value="COL" />
+			<xs:enumeration value="COM" />
+			<xs:enumeration value="COG" />
+			<xs:enumeration value="COD" />
+			<xs:enumeration value="COK" />
+			<xs:enumeration value="CRI" />
+			<xs:enumeration value="CIV" />
+			<xs:enumeration value="HRV" />
+			<xs:enumeration value="CUB" />
+			<xs:enumeration value="CYP" />
+			<xs:enumeration value="CZE" />
+			<xs:enumeration value="DNK" />
+			<xs:enumeration value="DJI" />
+			<xs:enumeration value="DMA" />
+			<xs:enumeration value="DOM" />
+			<xs:enumeration value="TMP" />
+			<xs:enumeration value="ECU" />
+			<xs:enumeration value="EGY" />
+			<xs:enumeration value="SLV" />
+			<xs:enumeration value="GNQ" />
+			<xs:enumeration value="ERI" />
+			<xs:enumeration value="EST" />
+			<xs:enumeration value="ETH" />
+			<xs:enumeration value="FRO" />
+			<xs:enumeration value="FLK" />
+			<xs:enumeration value="FJI" />
+			<xs:enumeration value="FIN" />
+			<xs:enumeration value="FRA" />
+			<xs:enumeration value="GUF" />
+			<xs:enumeration value="PYF" />
+			<xs:enumeration value="GAB" />
+			<xs:enumeration value="GMB" />
+			<xs:enumeration value="GEO" />
+			<xs:enumeration value="DEU" />
+			<xs:enumeration value="GHA" />
+			<xs:enumeration value="GIB" />
+			<xs:enumeration value="GRC" />
+			<xs:enumeration value="GRL" />
+			<xs:enumeration value="GRD" />
+			<xs:enumeration value="GLP" />
+			<xs:enumeration value="GUM" />
+			<xs:enumeration value="GTM" />
+			<xs:enumeration value="GIN" />
+			<xs:enumeration value="GNB" />
+			<xs:enumeration value="GUY" />
+			<xs:enumeration value="HTI" />
+			<xs:enumeration value="VAT" />
+			<xs:enumeration value="HND" />
+			<xs:enumeration value="HKG" />
+			<xs:enumeration value="HUN" />
+			<xs:enumeration value="ISL" />
+			<xs:enumeration value="IND" />
+			<xs:enumeration value="IDN" />
+			<xs:enumeration value="IRN" />
+			<xs:enumeration value="IRQ" />
+			<xs:enumeration value="IRL" />
+			<xs:enumeration value="ISR" />
+			<xs:enumeration value="ITA" />
+			<xs:enumeration value="JAM" />
+			<xs:enumeration value="JPN" />
+			<xs:enumeration value="JOR" />
+			<xs:enumeration value="KAZ" />
+			<xs:enumeration value="KEN" />
+			<xs:enumeration value="KIR" />
+			<xs:enumeration value="PRK" />
+			<xs:enumeration value="KOR" />
+			<xs:enumeration value="KWT" />
+			<xs:enumeration value="KGZ" />
+			<xs:enumeration value="LAO" />
+			<xs:enumeration value="LVA" />
+			<xs:enumeration value="LBN" />
+			<xs:enumeration value="LSO" />
+			<xs:enumeration value="LBR" />
+			<xs:enumeration value="LBY" />
+			<xs:enumeration value="LIE" />
+			<xs:enumeration value="LTU" />
+			<xs:enumeration value="LUX" />
+			<xs:enumeration value="MAC" />
+			<xs:enumeration value="MKD" />
+			<xs:enumeration value="MDG" />
+			<xs:enumeration value="MWI" />
+			<xs:enumeration value="MYS" />
+			<xs:enumeration value="MDV" />
+			<xs:enumeration value="MLI" />
+			<xs:enumeration value="MLT" />
+			<xs:enumeration value="MHL" />
+			<xs:enumeration value="MTQ" />
+			<xs:enumeration value="MRT" />
+			<xs:enumeration value="MUS" />
+			<xs:enumeration value="MEX" />
+			<xs:enumeration value="FSM" />
+			<xs:enumeration value="MDA" />
+			<xs:enumeration value="MCO" />
+			<xs:enumeration value="MNG" />
+			<xs:enumeration value="MSR" />
+			<xs:enumeration value="MAR" />
+			<xs:enumeration value="MOZ" />
+			<xs:enumeration value="MMR" />
+			<xs:enumeration value="NAM" />
+			<xs:enumeration value="NRU" />
+			<xs:enumeration value="NPL" />
+			<xs:enumeration value="NLD" />
+			<xs:enumeration value="ANT" />
+			<xs:enumeration value="NCL" />
+			<xs:enumeration value="NZL" />
+			<xs:enumeration value="NIC" />
+			<xs:enumeration value="NER" />
+			<xs:enumeration value="NGA" />
+			<xs:enumeration value="NIU" />
+			<xs:enumeration value="NFK" />
+			<xs:enumeration value="MNP" />
+			<xs:enumeration value="NOR" />
+			<xs:enumeration value="PSE" />
+			<xs:enumeration value="OMN" />
+			<xs:enumeration value="PAK" />
+			<xs:enumeration value="PLW" />
+			<xs:enumeration value="PAN" />
+			<xs:enumeration value="PNG" />
+			<xs:enumeration value="PRY" />
+			<xs:enumeration value="PER" />
+			<xs:enumeration value="PHL" />
+			<xs:enumeration value="PCN" />
+			<xs:enumeration value="POL" />
+			<xs:enumeration value="PRT" />
+			<xs:enumeration value="PRI" />
+			<xs:enumeration value="QAT" />
+			<xs:enumeration value="REU" />
+			<xs:enumeration value="ROM" />
+			<xs:enumeration value="RUS" />
+			<xs:enumeration value="RWA" />
+			<xs:enumeration value="SHN" />
+			<xs:enumeration value="KNA" />
+			<xs:enumeration value="LCA" />
+			<xs:enumeration value="SPM" />
+			<xs:enumeration value="VCT" />
+			<xs:enumeration value="WSM" />
+			<xs:enumeration value="SMR" />
+			<xs:enumeration value="STP" />
+			<xs:enumeration value="SAU" />
+			<xs:enumeration value="SEN" />
+			<xs:enumeration value="SYC" />
+			<xs:enumeration value="SLE" />
+			<xs:enumeration value="SGP" />
+			<xs:enumeration value="SVK" />
+			<xs:enumeration value="SVN" />
+			<xs:enumeration value="SLB" />
+			<xs:enumeration value="SOM" />
+			<xs:enumeration value="ZAF" />
+			<xs:enumeration value="ESP" />
+			<xs:enumeration value="LKA" />
+			<xs:enumeration value="SDN" />
+			<xs:enumeration value="SUR" />
+			<xs:enumeration value="SJM" />
+			<xs:enumeration value="SWZ" />
+			<xs:enumeration value="SWE" />
+			<xs:enumeration value="CHE" />
+			<xs:enumeration value="SYR" />
+			<xs:enumeration value="TJK" />
+			<xs:enumeration value="TZA" />
+			<xs:enumeration value="THA" />
+			<xs:enumeration value="TIB" />
+			<xs:enumeration value="TGO" />
+			<xs:enumeration value="TKL" />
+			<xs:enumeration value="TON" />
+			<xs:enumeration value="TTO" />
+			<xs:enumeration value="TUN" />
+			<xs:enumeration value="TUR" />
+			<xs:enumeration value="TKM" />
+			<xs:enumeration value="TCA" />
+			<xs:enumeration value="TUV" />
+			<xs:enumeration value="UGA" />
+			<xs:enumeration value="UKR" />
+			<xs:enumeration value="ARE" />
+			<xs:enumeration value="GBR" />
+			<xs:enumeration value="USA" />
+			<xs:enumeration value="VIR" />
+			<xs:enumeration value="URY" />
+			<xs:enumeration value="UZB" />
+			<xs:enumeration value="VUT" />
+			<xs:enumeration value="VEN" />
+			<xs:enumeration value="VNM" />
+			<xs:enumeration value="WLF" />
+			<xs:enumeration value="ESH" />
+			<xs:enumeration value="YEM" />
+			<xs:enumeration value="YUG" />
+			<xs:enumeration value="ZMB" />
+			<xs:enumeration value="ZWE" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="iso3166_CountryCodes">
+		<xs:list itemType="iso3166_CountryCode" />
+	</xs:simpleType>
+	<!-- Some IP types -->
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+NAME: ProSchemas.IP_Address.xsd
+BY:   Nikola Ozu
+DATE: 2001-06-26
+NOTE: This schema is in the PUBLIC DOMAIN.
+    </xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="ipv4_Address">
+		<xs:annotation>
+			<xs:documentation source="http://www.ietf.org/rfc/rfc2396.txt" xml:lang="en">
+SOURCE:
+ IETF
+ "RFC 2396: Uniform Resource Identifiers (URI): Generic Syntax" [1998-08]
+      </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(([0-9]{1,2}|[1][0-9]{2}|[2][0-4][0-9]|[2][5][0-5])\.){3}([0-9]{1,2}|[1][0-9]{2}|[2][0-4][0-9]|[2][5][0-5])" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ipv6_Address">
+		<xs:annotation>
+			<xs:documentation source="http://www.ietf.org/rfc/rfc2732.txt" xml:lang="en">
+SOURCE:
+ IETF
+ "RFC 2732: Format for Literal IPv6 Addresses in URL"s" [sic] [1999-12]
+      </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ip_DomainName">
+		<xs:annotation>
+			<xs:documentation source="http://www.ietf.org/rfc/rfc2396.txt" xml:lang="en">
+SOURCE:
+ IETF
+ "RFC 2396: Uniform Resource Identifiers (URI): Generic Syntax" [1998-08]
+      </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="((([A-Za-z0-9])|([A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]))\.)+(com|edu|gov|mil|net|org)" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="uri_Scheme">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Za-z]([A-Za-z0-9\+\-\.])*" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="uri_Host">
+		<xs:union memberTypes="ipv4_Address ipv6_Address ip_DomainName" />
+	</xs:simpleType>
+	<xs:simpleType name="uri_PathChars">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(([A-Za-z0-9\-_\.!~\*-\(\):@&amp;=\+$,/])|([%][A-Fa-f0-9]{2}))+" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="uri_FragChars">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([A-Za-z0-9\-_\.!~\*-\(\):@&amp;=\+$,;/\?])+" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="url">
+		<xs:sequence>
+			<xs:element name="Scheme" type="uri_Scheme" />
+			<xs:element name="Host" type="uri_Host" />
+			<xs:element name="Port" type="xs:nonNegativeInteger" minOccurs="0" />
+			<xs:element name="Path" type="uri_PathChars" />
+			<xs:element name="Frag" type="uri_FragChars" minOccurs="0" />
+			<xs:element name="Query" type="uri_FragChars" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="URL" type="url" />
+	<xs:simpleType name="mailto_Name">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([!-~-[@,;:&quot;\.\[\]\(\)\\&lt;&gt;]])*" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="uri_mailto">
+		<xs:sequence>
+			<xs:element name="Name" type="mailto_Name" />
+			<xs:element name="Host" type="uri_Host" />
+		</xs:sequence>
+	</xs:complexType>
+	<!-- -->
+	<!-- some building blocks used by Complex Types later in this schema -->
+	<!-- -->
+	<xs:group name="NameGroup">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Simple name block used for various person types
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Title" type="xs:string" minOccurs="0" />
+			<xs:element name="FirstName" type="xs:string" />
+			<xs:element name="MiddleName" type="xs:string" minOccurs="0" />
+			<xs:element name="LastName" type="xs:string" />
+			<xs:element name="PreferredName" type="xs:string" minOccurs="0" />
+			<xs:element name="Suffix" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="EContactGroup">
+		<xs:sequence>
+			<xs:element name="Email" type="uri_mailto" minOccurs="0" />
+			<xs:element name="Phone" type="phoneNumberType" />
+			<xs:element name="Fax" type="phoneNumberType" minOccurs="0" />
+			<xs:element name="MobilePhone" type="phoneNumberType" minOccurs="0" />
+		</xs:sequence>
+	</xs:group>
+	<xs:simpleType name="gender">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Some events allow both male and female competiors, used mixed to indicate this.
+Replaces SDIF Code 010 and 011 tables			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="male" />
+			<xs:enumeration value="female" />
+			<xs:enumeration value="mixed" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="usasIDType">
+		<xs:annotation>
+			<xs:documentation source="http://www.upu.org" xml:lang="en">This ID is created from the birthDate (mmddyy), 
+			3 characters of first name,
+			1 character of middle name,
+			4 characters of last name.
+			Any special characters of name like the ' in O'Neil are removed
+			Any spaces are filled with the * character
+			Duplicates are broken by replacing the first character of the ID starting at 2-Z
+			Official usasIDs must be created by the memberID service at USA Swimming's website.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="14" />
+			<xs:maxLength value="14" />
+			<xs:pattern value="([0-9A-Z]){1}[0-9]{5}([A-Z\*]{8})" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="lscCodeType">
+		<xs:annotation>
+			<xs:documentation>Replaces SDIF Code 002 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AD" />
+			<xs:enumeration value="MV" />
+			<xs:enumeration value="AK" />
+			<xs:enumeration value="MW" />
+			<xs:enumeration value="AM" />
+			<xs:enumeration value="NC" />
+			<xs:enumeration value="AR" />
+			<xs:enumeration value="ND" />
+			<xs:enumeration value="AZ" />
+			<xs:enumeration value="NE" />
+			<xs:enumeration value="BD" />
+			<xs:enumeration value="NI" />
+			<xs:enumeration value="CA" />
+			<xs:enumeration value="NJ" />
+			<xs:enumeration value="CC" />
+			<xs:enumeration value="NM" />
+			<xs:enumeration value="CO" />
+			<xs:enumeration value="NT" />
+			<xs:enumeration value="CT" />
+			<xs:enumeration value="OH" />
+			<xs:enumeration value="FG" />
+			<xs:enumeration value="OK" />
+			<xs:enumeration value="FL" />
+			<xs:enumeration value="OR" />
+			<xs:enumeration value="GA" />
+			<xs:enumeration value="OZ" />
+			<xs:enumeration value="GU" />
+			<xs:enumeration value="PC" />
+			<xs:enumeration value="HI" />
+			<xs:enumeration value="PN" />
+			<xs:enumeration value="IA" />
+			<xs:enumeration value="PV" />
+			<xs:enumeration value="IE" />
+			<xs:enumeration value="SC" />
+			<xs:enumeration value="IL" />
+			<xs:enumeration value="SD" />
+			<xs:enumeration value="IN" />
+			<xs:enumeration value="SE" />
+			<xs:enumeration value="KY" />
+			<xs:enumeration value="SI" />
+			<xs:enumeration value="LA" />
+			<xs:enumeration value="SN" />
+			<xs:enumeration value="LE" />
+			<xs:enumeration value="SR" />
+			<xs:enumeration value="MA" />
+			<xs:enumeration value="ST" />
+			<xs:enumeration value="MD" />
+			<xs:enumeration value="UT" />
+			<xs:enumeration value="ME" />
+			<xs:enumeration value="VA" />
+			<xs:enumeration value="MI" />
+			<xs:enumeration value="WI" />
+			<xs:enumeration value="MN" />
+			<xs:enumeration value="WT" />
+			<xs:enumeration value="MR" />
+			<xs:enumeration value="WV" />
+			<xs:enumeration value="MS" />
+			<xs:enumeration value="WY" />
+			<xs:enumeration value="MT" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="usasCountryCode">
+		<xs:annotation>
+			<xs:documentation>Replaces SDIF Code 004 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="2AL" />
+			<xs:enumeration value="FGN" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="union.usasCitizenCode">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Used to indicate citizenship.  Can use the special code			2AL to mean duel US and some other citizenship, 		
+FGN to mean non-US citizenship or 
+The standard ISO3166 country codes for the country the athlete is representing.
+Replaces SDIF Code 004 and 009 tables</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="usasCountryCode iso3166_CountryCodes" />
+	</xs:simpleType>
+	<xs:simpleType name="strokeType">
+		<xs:annotation>
+			<xs:documentation>Replaces SDIF Code 012 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Fly" />
+			<xs:enumeration value="Free" />
+			<xs:enumeration value="Back" />
+			<xs:enumeration value="Breast" />
+			<xs:enumeration value="Medley" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="eventMarkType">
+		<xs:annotation>
+			<xs:documentation>Used to represent the total mark for an event.  This value is a positive float with decimal hundredths.  The value could represent the total number of seconds for a swim or it could be used to show the number of points for a diving event as an example.  The prefered way to represent a time result is the used the XML built-in type xs:duration.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2" />
+			<xs:minInclusive value="0.00" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="union.resultType">
+		<xs:annotation>
+			<xs:documentation>Used to represent results for an event.  Acceptable values are a positive float with at most 2 fraction digits or a standard xs:duration.  For time results xs:duration is the preferred format.
+</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="xs:duration eventMarkType" />
+	</xs:simpleType>
+	<xs:simpleType name="distanceType">
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="25" />
+			<xs:enumeration value="50" />
+			<xs:enumeration value="100" />
+			<xs:enumeration value="200" />
+			<xs:enumeration value="400" />
+			<xs:enumeration value="500" />
+			<xs:enumeration value="800" />
+			<xs:enumeration value="1500" />
+			<xs:enumeration value="1650" />
+			<xs:enumeration value="3000" />
+			<xs:enumeration value="5000" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="courseType">
+		<xs:annotation>
+			<xs:documentation>Replaces SDIF Code 013 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LCM" />
+			<xs:enumeration value="SCM" />
+			<xs:enumeration value="SCY" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ageType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Used to indicate age groups for an event or meet.  UN is code for under, OV is code for over.
+So a 10 and under event would have MinAge=UN MaxAge=10
+15 and over event would have MinAge=15 MaxAge=OV
+
+Replaces SDIF code 025 table		</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="2" />
+			<xs:pattern value="UN|[0-9]{2}|OV" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="athleteClassType">
+		<xs:annotation>
+			<xs:documentation>Replaces SDIF code 014 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FR" />
+			<xs:enumeration value="SO" />
+			<xs:enumeration value="JR" />
+			<xs:enumeration value="SR" />
+			<xs:enumeration value="9" />
+			<xs:enumeration value="10" />
+			<xs:enumeration value="11" />
+			<xs:enumeration value="12" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="roundType">
+		<xs:annotation>
+			<xs:documentation>Replaces SDIF code 019 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Prelim" />
+			<xs:enumeration value="Quarter" />
+			<xs:enumeration value="Semi" />
+			<xs:enumeration value="Final" />
+			<xs:enumeration value="SwimOff" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="resultStatusType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Indicates the status of a result.  Older file formats have left this field blank for a valid time and only used codes to indicate the reason not to count a time.  We have chosen to explicitly indicate a good time.
+Replaces SDIF code 020 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="GT" />
+			<xs:enumeration value="DQ" />
+			<xs:enumeration value="DNF" />
+			<xs:enumeration value="NT" />
+			<xs:enumeration value="NS" />
+			<xs:enumeration value="SCR" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="eventTimeClassType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Used to indicate class of event or meet.
+So a A-B meet would have  MinTimeClass=1B MaxTimeClass=1A
+and an open meet would have  MinTimeClass=na  MaxTimeClass=na
+
+Replaces SDIF code 014 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="2" />
+			<xs:enumeration value="na" />
+			<xs:enumeration value="nv" />
+			<xs:enumeration value="1B" />
+			<xs:enumeration value="2B" />
+			<xs:enumeration value="1A" />
+			<xs:enumeration value="2A" />
+			<xs:enumeration value="3A" />
+			<xs:enumeration value="4A" />
+			<xs:enumeration value="Jr" />
+			<xs:enumeration value="Sr" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="seasonType">
+		<xs:annotation>
+			<xs:documentation>Replaces SDIF code 022 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="N" />
+			<xs:enumeration value="S1" />
+			<xs:enumeration value="S2" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="regionType">
+		<xs:annotation>
+			<xs:documentation>Replaces SDIF code 007 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[1-9A-E]{1}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="memberActionCode">
+		<xs:annotation>
+			<xs:documentation>Replaces SDIF code 0021 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="N" />
+			<xs:enumeration value="R" />
+			<xs:enumeration value="C" />
+			<xs:enumeration value="D" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="organizationType">
+		<xs:annotation>
+			<xs:documentation>Replaces SDIF Code 001 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="USAS" />
+			<xs:enumeration value="Masters" />
+			<xs:enumeration value="NCAA" />
+			<xs:enumeration value="NCAA Div I" />
+			<xs:enumeration value="NCAA Div II" />
+			<xs:enumeration value="NCAA Div III" />
+			<xs:enumeration value="YMCA" />
+			<xs:enumeration value="FINA" />
+			<xs:enumeration value="HighSch" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ethnicityType">
+		<xs:annotation>
+			<xs:documentation>Replaces SDIF code 026 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Q" />
+			<xs:enumeration value="R" />
+			<xs:enumeration value="S" />
+			<xs:enumeration value="T" />
+			<xs:enumeration value="U" />
+			<xs:enumeration value="V" />
+			<xs:enumeration value="W" />
+			<xs:enumeration value="X" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="phoneNumberType">
+		<xs:restriction base="xs:nonNegativeInteger">
+			<xs:pattern value="[2-9][0-9]{9}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="splitTimingType">
+		<xs:annotation>
+			<xs:documentation>Type of split times being reported.  Replaces SDIF Code 015 table.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Cumulative " />
+			<xs:enumeration value="Interval" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="meetCategoryType">
+		<xs:annotation>
+			<xs:documentation>Type of meet. Replaces SDIF Code 005 table</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Invite" />
+			<xs:enumeration value="Regional" />
+			<xs:enumeration value="Zone" />
+			<xs:enumeration value="ZoneChamp" />
+			<xs:enumeration value="LscChamp" />
+			<xs:enumeration value="Nationals" />
+			<xs:enumeration value="Juniors" />
+			<xs:enumeration value="Seniors" />
+			<xs:enumeration value="Dual" />
+			<xs:enumeration value="TimeTrials" />
+			<xs:enumeration value="International" />
+			<xs:enumeration value="Open" />
+			<xs:enumeration value="League" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="clubCodeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5" />
+			<xs:minLength value="1" />
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- -->
+	<!-- Now the fun stuff.  More complex types that give real information! -->
+	<!-- -->
+	<xs:complexType name="AthleteType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Base athlete type.  Used for MemberRegistration and AthleteEntry types.  First and Last names, birthdate, gender are required. Middle and preferred name are optional
+Replaces the first few fields of the SDIF D0 record		</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name">
+				<xs:complexType>
+					<xs:group ref="NameGroup" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="BirthDate" type="xs:date" />
+			<xs:element name="Gender" type="gender" />
+			<xs:element name="IsAttached" type="xs:boolean" />
+			<xs:element name="LSC" type="lscCodeType" />
+			<xs:element name="ClubCode" type="clubCodeType" />
+			<xs:element name="CitizenOf" type="union.usasCitizenCode" />
+			<xs:element name="AthleteVendorSpecific" type="VendorExtensionType" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="organization" type="organizationType" use="required" />
+		<xs:attribute name="usasID" type="usasIDType" use="required" />
+	</xs:complexType>
+	<xs:complexType name="AthleteMeetType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Used to identify an athlete for meet entry or results.  First and Last names, birthdate, gender are required. Middle and preferred name are optional
+Replaces the first few fields of the SDIF D0 record		</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AthleteType">
+				<xs:sequence>
+					<xs:element name="IsRelayOnly" type="xs:boolean" />
+					<xs:element name="AgeAtMeet" type="xs:int" />
+					<xs:element name="SchoolClass" type="athleteClassType" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="IndividualEntryType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Used to describe an Individual event entry.  Replaces Event fields from SDIF D0 and E0 records		</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="EventGroup" />
+			<xs:element name="SeedData" type="EventSeedType" />
+			<xs:element name="IndividualEntryVendorSpecific" type="VendorExtensionType" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="eventNumber" type="xs:int" />
+	</xs:complexType>
+	<xs:group name="EventGroup">
+		<xs:annotation>
+			<xs:documentation>Used to describe an event with stroke, course, distance, gender, age groups</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Stroke" type="strokeType" />
+			<xs:element name="Distance" type="distanceType" />
+			<xs:element name="Course" type="courseType" />
+			<xs:element name="Gender" type="gender" />
+			<xs:element name="MinAge" type="ageType" />
+			<xs:element name="MaxAge" type="ageType" />
+			<xs:element name="IsRelay" type="xs:boolean" />
+			<xs:element name="MinTimeClass" type="eventTimeClassType" />
+			<xs:element name="MaxTimeClass" type="eventTimeClassType" />
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="EventSeedType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Seed information for the event.  Can convert times from other courses in some cases
+			What course was the raw time swum in and what course we are converting to must be provided if a convertedSeedTime is provided
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RawSeedTime" type="union.resultType" />
+			<xs:element name="RawCourse" type="courseType" minOccurs="0" />
+			<xs:element name="ConvertedSeedTime" type="union.resultType" minOccurs="0" />
+			<xs:element name="MeetCourse" type="courseType" minOccurs="0" />
+			<xs:element name="IsAlternate" type="xs:boolean" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoundResultType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Results for one splash. Time, course,  and status are required. 		HeatNumber, HeatLane, HeatPlace, PointsScored, OverallPlace are optional
+Split times are optional too
+Replaces the results fields in the SDIF D0 record		</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Time" type="union.resultType" />
+			<xs:element name="Course" type="courseType" />
+			<xs:element name="Status" type="resultStatusType" />
+			<xs:element name="HeatPlace" type="xs:int" minOccurs="0" />
+			<xs:element name="OverallPlace" type="xs:int" minOccurs="0" />
+			<xs:element name="HeatNumber" type="xs:int" minOccurs="0" />
+			<xs:element name="HeatLane" type="xs:int" minOccurs="0" />
+			<xs:element name="PointsScored" type="xs:int" minOccurs="0" />
+			<xs:element name="Splits" type="SplitType" minOccurs="0" />
+			<xs:element name="RoundResultVendorSpecific" type="VendorExtensionType" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="round" type="roundType" use="required" />
+	</xs:complexType>
+	<xs:complexType name="AthleteEntryType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Used to show the individual events an athlete is entering.  For a relay only swimmer there will be no IndividualEvent elements.
+Replaces multiple SDIF D0 and F0 records</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Athlete" type="AthleteMeetType" />
+			<xs:element name="Entries">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="EventEntry" type="IndividualEntryType" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RelayEntryType">
+		<xs:annotation>
+			<xs:documentation>RelayLetter is added to short club name e.g. Club Wolverine A
+Replaces SDIF E0 record</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="EventGroup" />
+			<xs:element name="SeedData" type="EventSeedType" />
+			<xs:element name="RelayMembers" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RelayMember" type="usasIDType" minOccurs="4" maxOccurs="8" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="relayLetter" type="xs:string" use="required" />
+		<xs:attribute name="eventNumber" type="xs:int" />
+	</xs:complexType>
+	<xs:complexType name="RelayResultType">
+		<xs:annotation>
+			<xs:documentation>RelayLetter is added to short club name e.g. Club Wolverine A
+Replaces SDIF E0 record</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="EventGroup" />
+			<xs:element name="RelayRoundResults">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RelayRoundResult" type="RelayRoundResultType" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="relayLetter" type="xs:string" use="required" />
+		<xs:attribute name="eventNumber" type="xs:int" />
+	</xs:complexType>
+	<xs:complexType name="RelayRoundResultType">
+		<xs:annotation>
+			<xs:documentation>Results of a relay includes optional results for each leg
+Replaces the results fields of the SDIF E0 record</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="RoundResultType">
+				<xs:sequence>
+					<xs:element name="RelayMemberResults">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="MemberResult" type="RelayMemberResult" minOccurs="0" maxOccurs="4" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RelayMemberResult">
+		<xs:annotation>
+			<xs:documentation>AthleteID should match an usasID for a previous defined Athlete
+Replaces the results fields of SDIF F0 record</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AthleteID" type="usasIDType" />
+			<xs:element name="LegTime" type="union.resultType" />
+		</xs:sequence>
+		<xs:attribute name="leg" type="xs:int" use="required" />
+	</xs:complexType>
+	<xs:complexType name="ClubType">
+		<xs:annotation>
+			<xs:documentation>Information about a club.  Replaces SDIF C1 record.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ClubFullName" type="xs:string" />
+			<xs:element name="ClubShortName" type="xs:string" />
+			<xs:element name="ClubAddress" type="usa_PostalAddress" />
+			<xs:group ref="EContactGroup" />
+			<xs:element name="ClubVendorSpecific" type="VendorExtensionType" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="ClubCode" type="clubCodeType" use="required" />
+		<xs:attribute name="LSCCode" type="lscCodeType" use="required" />
+	</xs:complexType>
+	<xs:complexType name="ClubEntryType">
+		<xs:annotation>
+			<xs:documentation>Club entry with all its athlete and relay entries included.  Replaces SDIF C2 record</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ClubType">
+				<xs:sequence>
+					<xs:element name="HeadCoachName" type="xs:string" />
+					<xs:element name="AssistantCoachName" type="xs:string" />
+					<xs:element name="CoachContact">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:group ref="EContactGroup" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="IndividualEntryCount" type="xs:nonNegativeInteger" />
+					<xs:element name="RelayEntryCount" type="xs:nonNegativeInteger" />
+					<xs:element name="AthleteCount" type="xs:nonNegativeInteger" />
+					<xs:element name="AthleteEntries">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="AthleteEntry" type="AthleteEntryType" maxOccurs="unbounded" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="RelayEntries">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="RelayEntry" type="RelayEntryType" maxOccurs="unbounded" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ClubEntryVendorSpecific" type="VendorExtensionType" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ClubResultType">
+		<xs:annotation>
+			<xs:documentation>Club results with results for all indvidual and relay swims</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ClubType">
+				<xs:sequence>
+					<xs:element name="HeadCoachName" type="xs:string" />
+					<xs:element name="AssistantCoachName" type="xs:string" />
+					<xs:element name="CoachContact">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:group ref="EContactGroup" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="IndividualEntryCount" type="xs:nonNegativeInteger" />
+					<xs:element name="RelayEntryCount" type="xs:nonNegativeInteger" />
+					<xs:element name="AthleteCount" type="xs:nonNegativeInteger" />
+					<xs:element name="AthleteResults">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="AthleteResult" type="AthleteResultType" maxOccurs="unbounded" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="RelayResults">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="RelayResult" type="RelayResultType" maxOccurs="unbounded" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ClubResultVendorSpecific" type="VendorExtensionType" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MemberRegistration">
+		<xs:annotation>
+			<xs:documentation>Registration record for a single athlete member
+Replaces SDIF D1, D2, and D3 records.  OLDUSSID is optional and is here for historical reasons only.  It is not used by the current USA Swimming system.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AthleteType">
+				<xs:sequence>
+					<xs:element name="MemberContact">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:group ref="EContactGroup" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="RegistrationDate" type="xs:date" />
+					<xs:element name="TransactionCode" type="memberActionCode" />
+					<xs:element name="MailingAddress" type="usa_PostalAddress" minOccurs="0" />
+					<xs:element name="USASRegionCode" type="regionType" minOccurs="0" />
+					<xs:element name="FinaMemberCode" type="xs:boolean" />
+					<xs:element name="SeasonCode" type="seasonType" />
+					<xs:element name="OLDUSSID" type="xs:string" minOccurs="0" />
+					<xs:element name="IsVisuallyImpaired" type="xs:boolean" />
+					<xs:element name="IsHearingImpaired" type="xs:boolean" />
+					<xs:element name="IsPhysicallyImpaired" type="xs:boolean" />
+					<xs:element name="IsCognitivelyImpaired" type="xs:boolean" />
+					<xs:element name="EthnicityCode1" type="ethnicityType" />
+					<xs:element name="EthnicityCode2" type="ethnicityType" />
+				</xs:sequence>
+				<xs:attribute name="memberID" type="xs:string" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SplitType">
+		<xs:annotation>
+			<xs:documentation>Information about a collection of splits Replaces SDIF G0 record</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Distance" type="distanceType" />
+			<xs:element name="SplitTiming" type="splitTimingType" />
+			<xs:element name="SplitTimes" type="SplitTimeType" maxOccurs="unbounded" />
+			<xs:element name="SplitVendorSpecific" type="VendorExtensionType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SplitTimeType">
+		<xs:annotation>
+			<xs:documentation>The time for a single split</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Time" type="union.resultType" />
+		</xs:sequence>
+		<xs:attribute name="Num" type="xs:negativeInteger" use="required" />
+	</xs:complexType>
+	<xs:complexType name="FileInfoType">
+		<xs:annotation>
+			<xs:documentation>Header information for file types.  Replaces SDIF A0 record</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CreateDate" type="xs:date" />
+			<xs:element name="SubmitterName" type="xs:string" />
+			<xs:element name="SubmitterContact">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="EContactGroup" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Vendor" type="VendorInfoType" />
+			<xs:element name="FileVendorSpecific" type="VendorExtensionType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VendorInfoType">
+		<xs:annotation>
+			<xs:documentation>Information about the software used to write the file</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string" />
+			<xs:element name="Software" type="xs:string" />
+			<xs:element name="SoftwareVersion" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VendorExtensionType">
+		<xs:annotation>
+			<xs:documentation>This element can be used by 3rd party software vendors to extend the XSDIF language in specific ways for use by their software.  USA Swimming systems will not validate nor try to read this content.  One note, the content must still be well formed XML.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:anyAttribute processContents="skip" />
+	</xs:complexType>
+	<xs:complexType name="MeetReconSignatureType">
+		<xs:annotation>
+			<xs:documentation>This type contains information about Meet Recon results.  
+			This should only be present if a MeetEnty or MeetResult has completely passed meet recon validation.
+	</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Signature" type="xs:string" />
+			<xs:element name="MeetReconDate" type="xs:date" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MeetHostType">
+		<xs:annotation>
+			<xs:documentation>Contact information for meet host(s).  Replaces SDIF B2 record</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string" />
+			<xs:element name="Address" type="usa_PostalAddress" />
+			<xs:group ref="EContactGroup" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MeetType">
+		<xs:annotation>
+			<xs:documentation>Information about a meet.  Replaces SDIF B1 record</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Organization" type="organizationType" />
+			<xs:element name="MeetName" type="xs:string" />
+			<xs:element name="Location" type="usa_PostalAddress" />
+			<xs:element name="Altitude" type="xs:nonNegativeInteger" />
+			<xs:element name="Category" type="meetCategoryType" />
+			<xs:element name="Start" type="xs:date" />
+			<xs:element name="End" type="xs:date" />
+			<xs:element name="Hosts" type="MeetHostType" maxOccurs="10" />
+			<xs:element name="MeetVendorSpecific" type="VendorExtensionType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IndividualResultType">
+		<xs:annotation>
+			<xs:documentation>Used to provide information about the results from all splashes for an event for a single athlete.
+	AthleteAge is the age of the athlete on the day of the swim.
+	</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="EventGroup" />
+			<xs:element name="Date" type="xs:date" />
+			<xs:element name="AthleteAge" type="xs:nonNegativeInteger" />
+			<xs:element name="RoundResults">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RoundResult" type="RoundResultType" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IndividualResultVendorSpecific" type="VendorExtensionType" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="eventNumber" type="xs:int" />
+	</xs:complexType>
+	<xs:complexType name="AthleteResultType">
+		<xs:annotation>
+			<xs:documentation>Used to provide information about the results from all splashes for an event for a single athlete.
+	AthleteAge is the age of the athlete on the day of the swim.
+	</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Athlete" type="AthleteMeetType" />
+			<xs:element name="Results">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="EventResult" type="IndividualResultType" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AthleteResultVendorSpecific" type="VendorExtensionType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MeetEntryFileType">
+		<xs:annotation>
+			<xs:documentation>This is the type that should be contained in the document sent in for MeetEntry.  
+	This is equivalent of the SDIF FileType=01
+	</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FileInfo" type="FileInfoType" />
+			<xs:element name="Meet" type="MeetType" />
+			<xs:element name="Clubs">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Club" type="ClubEntryType" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MeetResultFileType">
+		<xs:annotation>
+			<xs:documentation>This is the type that should be contained in the document sent in for MeetResults.  
+	This is equivalent of the SDIF FileType=02
+	</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FileInfo" type="FileInfoType" />
+			<xs:element name="Meet" type="MeetType" />
+			<xs:element name="Clubs">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Club" type="ClubResultType" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClubRegistrationFileType">
+		<xs:annotation>
+			<xs:documentation>This type contains information about a club's registration upload.  
+				This is equivalent of the SDIF FileType=10
+	</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FileInfo" type="FileInfoType" />
+			<xs:element name="Club" type="ClubType" />
+			<xs:element name="Registrations">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Member" type="MemberRegistration" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MeetReconFileType">
+		<xs:annotation>
+			<xs:documentation>This type contains information about a club's official member registration data.  
+				This is equivalent of the MeetRecon files exported from LSCWin
+	</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FileInfo" type="FileInfoType" />
+			<xs:element name="Athletes">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Athlete" type="AthleteMeetType" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="RegistrationFile" type="ClubRegistrationFileType" />
+	<xs:element name="MeetResultsFile" type="MeetResultFileType" />
+	<xs:element name="MeetEntryFile" type="MeetEntryFileType" />
+	<xs:element name="MeetReconFile" type="MeetReconFileType" />
+</xs:schema>
